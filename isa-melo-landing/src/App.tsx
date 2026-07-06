@@ -1,5 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, Variants } from 'framer-motion';
+
+// DEFINIÇÃO DE INTERFACES PARA AS PROPS (TS CRUCIAL)
+interface DiffData {
+  icon: string;
+  title: string;
+  desc: string;
+}
+
+interface DifferentialCardProps {
+  diff: DiffData;
+  cardVariants: Variants;
+}
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,7 +26,7 @@ export default function App() {
   // =============================================================
   // 1. CONFIGURAÇÕES DE SCROLL (HERO MOCKUP 3D)
   // =============================================================
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: heroScroll } = useScroll({
     target: heroRef,
     offset: ["start start", "end end"]
@@ -41,7 +53,7 @@ export default function App() {
   const magneticX = useSpring(mouseX, springConfig);
   const magneticY = useSpring(mouseY, springConfig);
 
-  const handleMouseMoveCTA = (e) => {
+  const handleMouseMoveCTA = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
     const centerX = left + width / 2;
@@ -58,7 +70,7 @@ export default function App() {
   // =============================================================
   // 3. CONFIGURAÇÕES DO TEXTO PARALLAX
   // =============================================================
-  const textSectionRef = useRef(null);
+  const textSectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: textScroll } = useScroll({
     target: textSectionRef,
     offset: ["start end", "end start"]
@@ -69,12 +81,12 @@ export default function App() {
   // =============================================================
   // 4. CONFIGURAÇÕES DE ANIMAÇÃO GERAL (STAGGER / DIFFERENTIALS)
   // =============================================================
-  const gridVariants = {
+  const gridVariants: Variants = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { staggerChildren: 0.12 } }
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 35, scale: 0.96 },
     show: { 
       opacity: 1, y: 0, scale: 1,
@@ -85,7 +97,7 @@ export default function App() {
   // =============================================================
   // 5. MÁSCARA DE TEXTO COM OPACIDADE POR PALAVRA NO SCROLL
   // =============================================================
-  const diffTitleRef = useRef(null);
+  const diffTitleRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: wordScroll } = useScroll({
     target: diffTitleRef,
     offset: ["start end", "center center"]
@@ -131,7 +143,7 @@ export default function App() {
                 href="https://wa.me/559981746266" target="_blank" rel="noreferrer"
                 style={{ x: magneticX, y: magneticY }}
                 whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center bg-amber-500 text-black px-8 py-3.5 rounded-full text-sm font-bold tracking-wide uppercase shadow-xl shadow-amber-500/20 transition-all group"
+                className="inline-flex items-center gap-2 bg-amber-500 text-black px-8 py-3.5 rounded-full text-sm font-bold tracking-wide uppercase shadow-xl shadow-amber-500/20 transition-all group"
               >
                 <span>Solicitar Orçamento</span>
                 <motion.span className="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1">→</motion.span>
@@ -356,12 +368,12 @@ export default function App() {
 // =============================================================
 // SUB-COMPONENTE: CARD COM SPOTLIGHT TRACKER (HOLOFOTE DE LUZ)
 // =============================================================
-function DifferentialCard({ diff, cardVariants }) {
-  const cardRef = useRef(null);
+function DifferentialCard({ diff, cardVariants }: DifferentialCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const { left, top } = cardRef.current.getBoundingClientRect();
     mouseX.set(e.clientX - left);
@@ -376,7 +388,6 @@ function DifferentialCard({ diff, cardVariants }) {
       whileHover={{ y: -6 }}
       className="bg-zinc-900 p-8 rounded-2xl border border-zinc-800/60 transition-colors duration-300 cursor-pointer relative overflow-hidden group"
     >
-      {/* O Holofote invisível que acende no Hover seguindo as coordenadas x e y */}
       <motion.div 
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
@@ -406,7 +417,18 @@ function ServicesSection() {
     { id: 'branding', label: 'Branding', icon: '✒️' }
   ];
 
-  const plans = {
+  type PlanItem = {
+    name: string;
+    price: string;
+    label: string;
+    features: string[];
+    featured?: boolean;
+    badge?: string;
+    highlight?: boolean;
+    customPrice?: boolean;
+  };
+
+  const plans: Record<string, PlanItem[]> = {
     social: [
       { name: 'Social Media', price: '500', label: 'Plano Básico · /mês', features: ['Estruturação do perfil', 'Criação de conteúdo', 'Copy estratégica', 'Desenvolvimento dos criativos', 'Entrega semanal', 'Sem gerenciamento'] },
       { name: 'Social Media', price: '850', label: 'Plano Intermediário · /mês', featured: true, badge: 'Mais Escolhido', features: ['Análise estratégica', 'Estruturação profissional', 'Estratégia de conteúdo', 'Criativos personalizados', '1 captação mensal', 'Gerenciamento das redes'] },
@@ -503,7 +525,7 @@ function ServicesSection() {
                 
                 <a href="https://wa.me/559981746266" target="_blank" rel="noreferrer" 
                    className={`w-full flex justify-center py-3.5 rounded-full text-sm font-bold tracking-wide uppercase transition-all duration-300 
-                   ${plan.featured ? 'bg-black text-white hover:bg-zinc-900' : 'bg-zinc-900 text-zinc-100 border border-zinc-700'}`}>
+                   ${plan.featured ? 'bg-black text-white hover:bg-zinc-900' : 'bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700'}`}>
                   {plan.customPrice ? 'Solicitar Diagnóstico' : 'Solicitar Plano'}
                 </a>
               </div>
