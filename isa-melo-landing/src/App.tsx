@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, Variants } from 'framer-motion';
-
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import type { Variants } from 'framer-motion'; // Importação exclusiva de tipo exigida pelo TS
 // DEFINIÇÃO DE INTERFACES PARA AS PROPS (TS CRUCIAL)
 interface DiffData {
   icon: string;
