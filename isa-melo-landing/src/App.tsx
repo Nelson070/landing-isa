@@ -303,12 +303,12 @@ export default function App() {
             className="grid md:grid-cols-3 gap-6"
           >
             {[
-              { icon: '👥', title: 'Atendimento Humanizado', desc: 'Relacionamento próximo, atenção real e comunicação clara com cada cliente.' },
-              { icon: '📈', title: 'Estratégia Associada a Vendas', desc: 'Marketing que vai além do visual — pensado para converter e atrair clientes.' },
-              { icon: '🖼️', title: 'Conteúdo com Posicionamento', desc: 'Conteúdo criado com intenção estratégica para comunicar o valor da sua marca.' },
-              { icon: '✒️', title: 'Design Premium', desc: 'Identidade visual refinada e consistente que transmite alto profissionalismo.' },
-              { icon: '💬', title: 'Comunicação Estratégica', desc: 'Mensagens claras e impactantes que conectam sua marca ao público certo.' },
-              { icon: '🖥️', title: 'Gestão Profissional', desc: 'Presença digital cuidada com planejamento e olhar analítico para o crescimento.' }
+              { icon: '', title: 'Atendimento Humanizado', desc: 'Relacionamento próximo, atenção real e comunicação clara com cada cliente.' },
+              { icon: '', title: 'Estratégia Associada a Vendas', desc: 'Marketing que vai além do visual — pensado para converter e atrair clientes.' },
+              { icon: '', title: 'Conteúdo com Posicionamento', desc: 'Conteúdo criado com intenção estratégica para comunicar o valor da sua marca.' },
+              { icon: '', title: 'Design Premium', desc: 'Identidade visual refinada e consistente que transmite alto profissionalismo.' },
+              { icon: '', title: 'Comunicação Estratégica', desc: 'Mensagens claras e impactantes que conectam sua marca ao público certo.' },
+              { icon: '', title: 'Gestão Profissional', desc: 'Presença digital cuidada com planejamento e olhar analítico para o crescimento.' }
             ].map((diff, i) => (
               <DifferentialCard key={i} diff={diff} cardVariants={cardVariants} />
             ))}
