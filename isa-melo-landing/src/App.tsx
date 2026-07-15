@@ -1,10 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { 
+  Users, 
+  TrendingUp, 
+  Image as ImageIcon, 
+  PenTool, 
+  MessageSquare, 
+  Monitor, 
+  Smartphone, 
+  Camera, 
+  Check, 
+  ArrowRight,
+  Heart
+} from 'lucide-react';
 
-// DEFINIÇÃO DE INTERFACES PARA AS PROPS
+// COMPONENTE DO ÍCONE OFICIAL DO WHATSAPP VIA SVG
+const WhatsAppIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.772-1.451L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.623-1.023-5.086-2.885-6.948C16.528 2.017 14.067 1 11.447 1 6.012 1 1.587 5.37 1.584 10.8c-.001 1.643.499 3.242 1.448 4.849l-.982 3.58 3.68-.964zm10.83-4.873c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.317-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.007-.242-.393-.487-.34-.669-.34-.173-.001-.371-.001-.569-.001-.198 0-.52.074-.792.401-.272.296-1.04 1.016-1.04 2.479 0 1.462 1.064 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.5c.71.31 1.265.496 1.698.634.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+  </svg>
+);
+
+interface SvgIconProps {
+  className?: string;
+}
+
+// COMPONENTE DO ÍCONE DO INSTAGRAM VIA SVG (Para arrumar o rodapé também)
+const InstagramIcon = ({ className = "w-4 h-4" }: SvgIconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+// CONTEXTO DE INTERFACES PARA AS PROPS
 interface DiffData {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   desc: string;
 }
@@ -76,8 +113,8 @@ export default function App() {
     target: textSectionRef,
     offset: ["start end", "end start"]
   });
-  const xTextLeft = useTransform(textScroll, [0, 1], [-250, 250]);
-  const xTextRight = useTransform(textScroll, [0, 1], [250, -250]);
+  const xTextLeft = useTransform(textScroll, [0, 1], [-180, 180]);
+  const xTextRight = useTransform(textScroll, [0, 1], [180, -180]);
 
   // =============================================================
   // 4. CONFIGURAÇÕES DE ANIMAÇÃO GERAL (STAGGER / DIFFERENTIALS)
@@ -147,7 +184,9 @@ export default function App() {
                 className="inline-flex items-center gap-2 bg-[#f4ecdf] text-[#232e0d] px-8 py-3.5 rounded-full text-sm font-bold tracking-wide uppercase shadow-xl shadow-white/5 transition-all group"
               >
                 <span>Solicitar Orçamento</span>
-                <motion.span className="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1">→</motion.span>
+                <motion.span className="ml-1 inline-block transition-transform duration-300 group-hover:translate-x-1">
+                  <ArrowRight className="w-4 h-4" />
+                </motion.span>
               </motion.a>
             </div>
           </div>
@@ -164,18 +203,18 @@ export default function App() {
             {/* 1. SEÇÃO DE STORIES SIMULADA NO TOPO */}
             <div className="flex gap-3 overflow-hidden border-b border-[#f4ecdf]/10 pb-3 w-full justify-start mb-2">
               {[
-                { label: 'Estratégia', active: true },
-                { label: 'Cases', active: true },
-                { label: 'Vendas', active: false },
-                { label: 'Branding', active: false }
+                { label: 'Estratégia', active: true, icon: <Monitor className="w-3.5 h-3.5 text-[#f4ecdf]" /> },
+                { label: 'Cases', active: true, icon: <TrendingUp className="w-3.5 h-3.5 text-[#f4ecdf]" /> },
+                { label: 'Vendas', active: false, icon: <MessageSquare className="w-3.5 h-3.5 text-[#f4ecdf]/40" /> },
+                { label: 'Branding', active: false, icon: <PenTool className="w-3.5 h-3.5 text-[#f4ecdf]/40" /> }
               ].map((story, i) => (
                 <div key={i} className="flex flex-col items-center gap-1 shrink-0">
                   <motion.div 
                     whileHover={{ scale: 1.08 }}
                     className={`w-10 h-10 rounded-full p-[2px] ${story.active ? 'bg-[#f4ecdf]' : 'bg-[#f4ecdf]/20'}`}
                   >
-                    <div className="w-full h-full rounded-full bg-[#232e0d] flex items-center justify-center text-[10px]">
-                      {i === 0 ? '👩‍💻' : '✨'}
+                    <div className="w-full h-full rounded-full bg-[#232e0d] flex items-center justify-center">
+                      {story.icon}
                     </div>
                   </motion.div>
                   <span className="text-[9px] text-[#f4ecdf]/60 tracking-wide">{story.label}</span>
@@ -192,14 +231,14 @@ export default function App() {
                     animate={{ scale: [0, 1.2, 1], opacity: [0, 1, 1] }}
                     exit={{ scale: 1.4, opacity: 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute text-6xl z-30 pointer-events-none drop-shadow-[0_0_20px_rgba(244,236,223,0.3)]"
+                    className="absolute z-30 pointer-events-none drop-shadow-[0_0_20px_rgba(244,236,223,0.3)]"
                   >
-                    ❤️
+                    <Heart className="w-14 h-14 text-red-500 fill-red-500" />
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <span className="text-2xl mb-1">🎯</span>
+              <TrendingUp className="w-6 h-6 text-[#f4ecdf] mb-1.5" />
               <h3 className="font-serif text-base text-white">Posicionamento & Autoridade</h3>
               <p className="text-[11px] text-[#f4ecdf]/70 mt-1 max-w-[340px] leading-relaxed">
                 Dê dois cliques em qualquer área deste post para interagir com o conteúdo estratégico.
@@ -213,10 +252,10 @@ export default function App() {
                   animate={liked ? { scale: [1, 1.3, 1] } : {}} 
                   className={`flex items-center gap-1 font-medium ${liked ? 'text-red-400' : ''}`}
                 >
-                  {liked ? '❤️' : '🤍'} {liked ? '1.241' : '1.240'}
+                  <Heart className={`w-3.5 h-3.5 ${liked ? 'fill-red-400 text-red-400' : ''}`} /> {liked ? '1.241' : '1.240'}
                 </motion.span>
-                <span>💬 84</span>
-                <span>🚀 312</span>
+                <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> 84</span>
+                <span className="flex items-center gap-1"><ArrowRight className="w-3 h-3 -rotate-45" /> 312</span>
               </div>
               <span className="text-[#f4ecdf] font-semibold tracking-wide uppercase text-[8px] bg-[#f4ecdf]/5 px-2 py-0.5 rounded border border-[#f4ecdf]/10">
                 Métricas de Conversão
@@ -225,12 +264,16 @@ export default function App() {
 
             {/* CARDS FLUTUANTES PARALLAX NAS LATERAIS */}
             <motion.div style={{ x: cardLeftX, y: cardLeftY, opacity: cardLeftOpacity }} className="absolute p-4 w-[220px] bg-[#232e0d] border border-[#f4ecdf]/20 rounded-xl shadow-2xl z-20 left-[-50px] top-[25%] hidden md:block">
-              <div className="text-xs text-[#f4ecdf] font-bold mb-1 flex items-center gap-1.5">📈 Conversão Active</div>
+              <div className="text-xs text-[#f4ecdf] font-bold mb-1 flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-[#f4ecdf]" /> Conversão Active
+              </div>
               <p className="text-[10px] text-[#f4ecdf]/70 leading-normal">Transformamos interações superficiais em funis de vendas direta para o seu produto ou serviço.</p>
             </motion.div>
 
             <motion.div style={{ x: cardRightX, y: cardRightY, opacity: cardRightOpacity }} className="absolute p-4 w-[220px] bg-[#232e0d] border border-[#f4ecdf]/20 rounded-xl shadow-2xl z-20 right-[-50px] bottom-[20%] hidden md:block">
-              <div className="text-xs text-[#f4ecdf] font-bold mb-1 flex items-center gap-1.5">📱 Social Reels</div>
+              <div className="text-xs text-[#f4ecdf] font-bold mb-1 flex items-center gap-1.5">
+                <Smartphone className="w-3.5 h-3.5 text-[#f4ecdf]" /> Social Reels
+              </div>
               <p className="text-[10px] text-[#f4ecdf]/70 leading-normal">Captação, direção e edição com cortes dinâmicos e roteiro focado em retenção orgânica.</p>
             </motion.div>
           </motion.div>
@@ -268,12 +311,12 @@ export default function App() {
       <ServicesSection />
 
       {/* TEXTO PARALLAX INTERATIVO DE TRANSIÇÃO */}
-      <section className="py-20 bg-black/30 border-y border-[#f4ecdf]/10 flex flex-col justify-center overflow-hidden">
-        <motion.h2 style={{ x: xTextLeft }} className="text-7xl font-black tracking-tight text-[#f4ecdf]/10 uppercase whiteSpace-nowrap select-none m-0">
-          SOCIAL MEDIA • BRANDING • STRATEGY • COPYWRITING • FILMMAKING •
+      <section ref={textSectionRef} className="py-20 bg-[#f4ecdf]/5 border-y border-[#f4ecdf]/10 flex flex-col justify-center overflow-hidden">
+        <motion.h2 style={{ x: xTextLeft }} className="text-4xl md:text-5xl font-extrabold tracking-widest text-[#f4ecdf]/10 uppercase whitespace-nowrap select-none m-0">
+          SOCIAL MEDIA • BRANDING • STRATEGY • COPYWRITING • FILMMAKING • SOCIAL MEDIA • BRANDING •
         </motion.h2>
-        <motion.h2 style={{ x: xTextRight }} className="text-7xl font-black tracking-tight text-[#f4ecdf]/5 uppercase whiteSpace-nowrap select-none mt-2">
-          POSICIONAMENTO PREMIUM • DESIGN DE MARCAS • ESTRATÉGIA COMERCIAL •
+        <motion.h2 style={{ x: xTextRight }} className="text-4xl md:text-5xl font-extrabold tracking-widest text-[#f4ecdf]/4 uppercase whitespace-nowrap select-none mt-4">
+          POSICIONAMENTO PREMIUM • DESIGN DE MARCAS • ESTRATÉGIA COMERCIAL • POSICIONAMENTO PREMIUM •
         </motion.h2>
       </section>
 
@@ -303,12 +346,12 @@ export default function App() {
             className="grid md:grid-cols-3 gap-6"
           >
             {[
-              { icon: '👥', title: 'Atendimento Humanizado', desc: 'Relacionamento próximo, atenção real e comunicação clara com cada cliente.' },
-              { icon: '📈', title: 'Estratégia Associada a Vendas', desc: 'Marketing que vai além do visual — pensado para converter e atrair clientes.' },
-              { icon: '🖼', title: 'Conteúdo com Posicionamento', desc: 'Conteúdo criado com intenção estratégica para comunicar o valor da sua marca.' },
-              { icon: '✒️', title: 'Design Premium', desc: 'Identidade visual refinada e consistente que transmite alto profissionalismo.' },
-              { icon: '💬', title: 'Comunicação Estratégica', desc: 'Mensagens claras e impactantes que conectam sua marca ao público certo.' },
-              { icon: '🖥️', title: 'Gestão Profissional', desc: 'Presença digital cuidada com planejamento e olhar analítico para o crescimento.' }
+              { icon: <Users className="w-6 h-6 text-[#f4ecdf]" />, title: 'Atendimento Humanizado', desc: 'Relacionamento próximo, atenção real e comunicação clara com cada cliente.' },
+              { icon: <TrendingUp className="w-6 h-6 text-[#f4ecdf]" />, title: 'Estratégia Associada a Vendas', desc: 'Marketing que vai além do visual — pensado para converter e atrair clientes.' },
+              { icon: <ImageIcon className="w-6 h-6 text-[#f4ecdf]" />, title: 'Conteúdo com Posicionamento', desc: 'Conteúdo criado com intenção estratégica para comunicar o valor da sua marca.' },
+              { icon: <PenTool className="w-6 h-6 text-[#f4ecdf]" />, title: 'Design Premium', desc: 'Identidade visual refinada e consistente que transmite alto profissionalismo.' },
+              { icon: <MessageSquare className="w-6 h-6 text-[#f4ecdf]" />, title: 'Comunicação Estratégica', desc: 'Mensagens claras e impactantes que conectam sua marca ao público certo.' },
+              { icon: <Monitor className="w-6 h-6 text-[#f4ecdf]" />, title: 'Gestão Profissional', desc: 'Presença digital cuidada com planejamento e olhar analítico para o crescimento.' }
             ].map((diff, i) => (
               <DifferentialCard key={i} diff={diff} cardVariants={cardVariants} />
             ))}
@@ -316,7 +359,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* CTA FINAL */}
+      {/* CTA FINAL - COM O ÍCONE DO WHATSAPP RECONHECIDO */}
       <section className="py-24 bg-[#232e0d] border-t border-[#f4ecdf]/10 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_100%,rgba(244,236,223,0.04)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-[1160px] mx-auto px-7 relative z-10">
@@ -328,7 +371,8 @@ export default function App() {
             <a href="https://wa.me/559981746266" target="_blank" rel="noreferrer"
                className="inline-flex items-center gap-3 bg-[#f4ecdf] text-[#232e0d] px-10 py-4 rounded-full text-sm font-bold uppercase hover:opacity-90 shadow-xl transition-all"
             >
-              <span className="text-base">💬</span>
+              {/* ÍCONE VETORIAL DO WHATSAPP AQUI */}
+              <WhatsAppIcon className="w-4 h-4 text-[#232e0d]" />
               Solicitar Orçamento no WhatsApp
             </a>
           </motion.div>
@@ -349,9 +393,15 @@ export default function App() {
             <div className="md:justify-self-end">
               <h4 className="font-sans text-[0.72rem] tracking-[0.2em] uppercase text-[#f4ecdf]/40 font-semibold mb-4">Contato</h4>
               <div className="flex flex-col gap-3">
-                <a href="https://instagram.com/kaisamelo" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">📸 @kaisamelo</a>
-                <a href="https://wa.me/559981746266" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">💬 (99) 98174-6266</a>
-                <a href="mailto:mmelodesignerdemarcas@gmail.com" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">✉️ mmelodesignerdemarcas@gmail.com</a>
+                <a href="https://instagram.com/kaisamelo" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">
+                  <InstagramIcon className="w-3.5 h-3.5" /> @kaisamelo
+                </a>
+                <a href="https://wa.me/559981746266" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">
+                  <WhatsAppIcon className="w-3.5 h-3.5 text-[#f4ecdf]/70" /> (99) 98174-6266
+                </a>
+                <a href="mailto:mmelodesignerdemarcas@gmail.com" className="flex items-center gap-3 text-xs text-[#f4ecdf]/70 hover:text-white transition-colors">
+                  <MessageSquare className="w-3.5 h-3.5" /> mmelodesignerdemarcas@gmail.com
+                </a>
               </div>
             </div>
           </div>
@@ -398,7 +448,7 @@ function DifferentialCard({ diff, cardVariants }: DifferentialCardProps) {
         }}
       />
       
-      <div className="text-3xl mb-4 relative z-10">{diff.icon}</div>
+      <div className="mb-4 relative z-10">{diff.icon}</div>
       <h4 className="font-serif text-lg text-white mb-2 relative z-10">{diff.title}</h4>
       <p className="text-xs text-[#f4ecdf]/70 leading-relaxed relative z-10">{diff.desc}</p>
     </motion.div>
@@ -412,9 +462,9 @@ function ServicesSection() {
   const [activeTab, setActiveTab] = useState('social');
   
   const tabs = [
-    { id: 'social', label: 'Social Media', icon: '📱' },
-    { id: 'filmmaker', label: 'Filmmaker', icon: '📷' },
-    { id: 'branding', label: 'Branding', icon: '✒️' }
+    { id: 'social', label: 'Social Media', icon: <Smartphone className="w-3.5 h-3.5" /> },
+    { id: 'filmmaker', label: 'Filmmaker', icon: <Camera className="w-3.5 h-3.5" /> },
+    { id: 'branding', label: 'Branding', icon: <PenTool className="w-3.5 h-3.5" /> }
   ];
 
   type PlanItem = {
@@ -473,7 +523,7 @@ function ServicesSection() {
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <span className="mr-0.5">{tab.icon}</span> {tab.label}
+                  <span className="shrink-0">{tab.icon}</span> {tab.label}
                 </button>
               );
             })}
@@ -517,7 +567,7 @@ function ServicesSection() {
                 <ul className="flex flex-col gap-3 mb-8">
                   {plan.features.map((feature, j) => (
                     <li key={j} className="flex items-start gap-2 text-sm">
-                      <span className="mt-0.5 shrink-0 text-xs">✔️</span>
+                      <Check className={`w-4 h-4 mt-0.5 shrink-0 ${plan.featured ? 'text-[#232e0d]' : 'text-[#f4ecdf]'}`} />
                       <span className={plan.featured ? 'text-[#232e0d]/80 font-semibold' : 'text-[#f4ecdf]/70'}>{feature}</span>
                     </li>
                   ))}
